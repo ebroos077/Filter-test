@@ -1,0 +1,33 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Cabin Condensed, serif; background: #f5f5f5; padding: 2rem; color: #333; }
+.filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1.5rem; align-items: flex-end; }
+.filter-group { display: flex; flex-direction: column; gap: 6px; }
+.filter-group label { font-family: Cabin Condensed, serif; font-size: 12px; color: #333; }
+select, input[type="text"] { font-family: Cabin Condensed, serif; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff; cursor: pointer; }
+input[type="text"] { width: 250px; cursor: text; }
+input[type="text"]:focus, select:focus { outline: none; border-color: #aaa; }
+.count { font-family: Cabin Condensed, serif; font-size: 15px; color: #666; margin-bottom: 1rem; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.card { background: #fff; border: 2px solid transparent; border-radius: 12px; padding: 1rem 1.25rem; position: relative; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+.card:hover { border-color: #2B4A7A; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.card-proptype { font-family: Cabin Condensed, serif; font-size: 14px; font-weight: bold; }
+.card-city { font-family: Cabin Condensed, serif; font-size: 12px; color: #666; margin-top: 2px; }
+.badge { font-family: Cabin Condensed, serif; font-size: 11px; padding: 3px 8px; border-radius: 8px; white-space: nowrap; display: inline-block; margin-bottom: 8px; margin-right: 4px; }
+.badge-conv { background: #E6F1FB; color: #0C447C; }
+.badge-fha { background: #EAF3DE; color: #27500A; }
+.badge-va { background: #EEEDFE; color: #3C3489; }
+.badge-hard { background: #FAEEDA; color: #633806; }
+.badge-construct { background: #FFF4E5; color: #7A4F01; }
+.badge-commercial { background: #E5F9F6; color: #1B5E3C; }
+.badge-brokered { background: #F0E6FF; color: #4B2E83; }
+.badge-funded { background: #E6F9F0; color: #2E7D3C; }
+.badge-refi { background: #FAECE7; color: #712B13; }
+.card-row { display: flex; justify-content: space-between; font-family: Cabin Condensed, serif; font-size: 13px; margin-top: 6px; }
+.card-row span:first-child { color: #666; }
+.card-row span:last-child { font-weight: 500; }
+.no-results { font-family: Cabin Condensed, serif; text-align: center; padding: 2rem; color: #666; font-size: 14px; grid-column: 1/-1; }
+.load-more-wrap { text-align: center; margin-top: 1.5rem; }
+.load-more-btn { font-family: Cabin Condensed, serif; padding: 10px 32px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+.load-more-btn:hover { background: #f0f0f0; border-color: #bbb; }
+.load-more-btn:disabled { opacity: 0.4; cursor: default; }

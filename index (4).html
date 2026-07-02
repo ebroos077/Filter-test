@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study Filter</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+  <div style="display: flex; align-items: center; gap: 10px; flex: 1;">
+    <span style="font-family: Georgia, serif; font-size: 36px; font-weight: 700; color: #2B4A7A; letter-spacing: 1px;">FIDELIS</span>
+    <div style="display: flex; align-items: flex-end; gap: 3px; height: 36px; margin: 0 4px;">
+      <div style="width: 4px; height: 18px; background: #888;"></div>
+      <div style="width: 4px; height: 26px; background: #888;"></div>
+      <div style="width: 4px; height: 34px; background: #888;"></div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center; line-height: 1.2;">
+      <span style="font-family: Cabin Condensed, serif; font-size: 11px; font-weight: 600; color: #555; letter-spacing: 2px;">PRIVATE</span>
+      <span style="font-family: Cabin Condensed, serif; font-size: 11px; font-weight: 600; color: #555; letter-spacing: 2px;">FUND</span>
+      <span style="font-family: Cabin Condensed, serif; font-size: 9px; color: #777; letter-spacing: 1px;">CASE STUDY FILTER</span>
+    </div>
+  </div>
+  <div style="color: #666; font-family: Cabin Condensed, serif; text-align: center; flex: 1;">
+    <div style="font-size: 24px; font-weight: 700; color: #1c1c1c; line-height: 1;" id="hero-count">68</div>
+    <div style="font-size: 10px; letter-spacing: 1.5px; margin-top: 2px;">CASE STUDIES</div>
+  </div>
+  <div style="display: flex; gap: 8px; flex: 1; justify-content: flex-end;">
+    <button onclick="document.getElementById('about-box').style.display='block'" onmouseover="this.style.opacity='0.4'" onmouseout="this.style.opacity='1'" style="font-family: Cabin Condensed, serif; padding: 6px 14px; font-size: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; color: #666; transition: opacity 0.3s ease;">About</button>
+    <button onmouseover="this.style.opacity='0.4'" onmouseout="this.style.opacity='1'" onclick="resetFilters()" style="font-family: Cabin Condensed, serif; padding: 6px 14px; font-size: 12px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; color: #666; transition: opacity 0.3s ease;">Reset filters</button>
+  </div>
+</div>
+
+<div id="about-box" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999;" onclick="this.style.display='none'">
+  <div onclick="event.stopPropagation()" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; border-radius:12px; padding:2rem; max-width:420px; width:90%; box-shadow:0 12px 40px rgba(0,0,0,0.15); font-family:Georgia, serif;">
+    <h2 style="font-size:18px; margin-bottom:1rem; color:#2B4A7A;">About this filter</h2>
+    <p style="font-size:14px; line-height:1.6; color:#444;">This tool lets you browse Fidelis Private Fund case studies by loan type, property type, term, rate, and more. Use the filters at the top to narrow results, and click any card to view the full case study.</p>
+    <button onclick="document.getElementById('about-box').style.display='none'" onmouseover="this.style.opacity='0.4'" onmouseout="this.style.opacity='1'" style="margin-top:1.5rem; font-family:Cabin Condensed, serif; padding:6px 14px; font-size:12px; border:1px solid #ddd; border-radius:8px; background:#fff; cursor:pointer; color:#666; transition:opacity 0.3s ease;">Close</button>
+  </div>
+</div>
+
+<h2 style="font-family: Georgia, serif; font-size: 22px; font-weight: 500; color: #333; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid #ddd;">Browse Case Studies</h2>
+
+<div class="filters">
+  <div class="filter-group">
+    <label>Search</label>
+    <input type="text" id="search" oninput="filter()" placeholder="Search city or state...">
+  </div>
+  <div class="filter-group">
+    <label>Brokered or funded</label>
+    <select id="type-filter" onchange="filter()">
+      <option value="all">All</option>
+      <option value="Brokered Loan">Brokered Loan</option>
+      <option value="Funded Loan">Funded Loan</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Loan type</label>
+    <select id="loan-filter" onchange="filter()">
+      <option value="all">All types</option>
+      <option value="Conventional">Conventional</option>
+      <option value="FHA">FHA</option>
+      <option value="VA">VA</option>
+      <option value="Hard Money">Hard Money</option>
+      <option value="Construction">Construction</option>
+      <option value="Commercial">Commercial</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Loan term</label>
+    <select id="term-filter" onchange="filter()">
+      <option value="all">All terms</option>
+      <option value="10">10 years</option>
+      <option value="15">15 years</option>
+      <option value="20">20 years</option>
+      <option value="25">25 years</option>
+      <option value="30">30 years</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Refinance</label>
+    <select id="refi-filter" onchange="filter()">
+      <option value="all">All</option>
+      <option value="yes">Refinance only</option>
+      <option value="no">Purchase only</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Property type</label>
+    <select id="property-filter" onchange="filter()">
+      <option value="all">All types</option>
+      <option value="Single-Family Home">Single-Family Home</option>
+      <option value="Condo">Condo</option>
+      <option value="Townhouse">Townhouse</option>
+      <option value="Multi-Family (2-4 Units)">Multi-Family (2-4 Units)</option>
+      <option value="Manufactured Home">Manufactured Home</option>
+      <option value="Office Building">Office Building</option>
+      <option value="Retail / Storefront">Retail / Storefront</option>
+      <option value="Warehouse / Industrial">Warehouse / Industrial</option>
+      <option value="Apartment Complex (5+ Units)">Apartment Complex (5+ Units)</option>
+      <option value="Mixed-Use Building">Mixed-Use Building</option>
+      <option value="Hotel / Motel">Hotel / Motel</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Sort by</label>
+    <select id="sort-filter" onchange="filter()">
+      <option value="loanamt-asc">Loan Amount: low to high</option>
+      <option value="loanamt-desc">Loan Amount: high to low</option>
+      <option value="rate-asc">Rate: low to high</option>
+      <option value="rate-desc">Rate: high to low</option>
+      <option value="term-asc">Term: shortest first</option>
+      <option value="term-desc">Term: longest first</option>
+    </select>
+  </div>
+</div>
+
+<div class="count" id="count"></div>
+<div class="cards" id="cards"></div>
+<div class="load-more-wrap">
+  <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Load more</button>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
