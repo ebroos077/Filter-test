@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House Filter</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: #f5f5f5; padding: 2rem; color: #333; }
+  h1 { font-family: Georgia, serif; font-size: 30px; font-weight: 500; margin-bottom: 1.5rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 1.5rem; align-items: flex-end; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .filter-group label { font-family: Georgia, serif; font-size: 12px; color: #666; }
+  select, input[type="text"] { font-family: Arial, sans-serif; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; background: #fff; cursor: pointer; }
+  input[type="text"] { width: 250px; cursor: text; }
+  input[type="text"]:focus, select:focus { outline: none; border-color: #aaa; }
+  .count { font-family: Georgia, serif; font-size: 15px; color: #666; margin-bottom: 1rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+
+  .card {
+    background: #fff;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: #378ADD;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .card-addr { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; }
+  .card-city { font-family: Arial, sans-serif; font-size: 12px; color: #666; margin-top: 2px; }
+  .badge { font-family: Arial, sans-serif; font-size: 11px; padding: 3px 8px; border-radius: 8px; white-space: nowrap; display: inline-block; margin-bottom: 8px; margin-right: 4px; }
+  .badge-conv { background: #E6F1FB; color: #0C447C; }
+  .badge-fha { background: #EAF3DE; color: #27500A; }
+  .badge-va { background: #EEEDFE; color: #3C3489; }
+  .badge-hard { background: #FAEEDA; color: #633806; }
+  .badge-Construct { background: #FFF4E5; color: #7A4F01; }
+  .badge-commercial { background: #E5F9F6; color: #1B5E3C; }
+  .badge-brokered { background: #F0E6FF; color: #4B2E83; }
+  .badge-funded { background: #E6F9F0; color: #2E7D3C; }
+  .badge-refi { background: #FAECE7; color: #712B13; }
+  .card-row { display: flex; justify-content: space-between; font-family: Arial, sans-serif; font-size: 13px; margin-top: 6px; }
+  .card-row span:first-child { color: #666; }
+  .card-row span:last-child { font-weight: 500; }
+  .no-results { font-family: Georgia, serif; text-align: center; padding: 2rem; color: #666; font-size: 14px; grid-column: 1/-1; }
+
+  .load-more-wrap { text-align: center; margin-top: 1.5rem; }
+  .load-more-btn {
+    font-family: Georgia, serif;
+    padding: 10px 32px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .load-more-btn:hover { background: #f0f0f0; border-color: #bbb; }
+  .load-more-btn:disabled { opacity: 0.4; cursor: default; }
+</style>
+</head>
+<body>
+
+<h1>Property listings</h1>
+
+<div class="filters">
+  <div class="filter-group">
+    <label>Search</label>
+    <input type="text" id="search" oninput="filter()" placeholder="Search address or city...">
+  </div>
+  <div class="filter-group">
+    <label>Brokered or funded</label>
+    <select id="type-filter" onchange="filter()">
+      <option value="all">All</option>
+      <option value="Brokered Loan">Brokered Loan</option>
+      <option value="Funded Loan">Funded Loan</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Loan type</label>
+    <select id="loan-filter" onchange="filter()">
+      <option value="all">All types</option>
+      <option value="Conventional">Conventional</option>
+      <option value="FHA">FHA</option>
+      <option value="VA">VA</option>
+      <option value="Hard Money">Hard Money</option>
+      <option value="Construction">Construction</option>
+      <option value="Commercial">Commercial</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Refinance</label>
+    <select id="refi-filter" onchange="filter()">
+      <option value="all">All</option>
+      <option value="yes">Refinance only</option>
+      <option value="no">Purchase only</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Sort by</label>
+    <select id="sort-filter" onchange="filter()">
+      <option value="price-asc">Price: low to high</option>
+      <option value="price-desc">Price: high to low</option>
+      <option value="rate-asc">Rate: low to high</option>
+      <option value="rate-desc">Rate: high to low</option>
+    </select>
+  </div>
+</div>
+
+<div class="count" id="count"></div>
+<div class="cards" id="cards"></div>
+<div class="load-more-wrap">
+  <button class="load-more-btn" id="load-more-btn" onclick="loadMore()">Load more</button>
+</div>
+
+<script>
+const houses = [
+  {addr:"123 Maple St", city:"Las Vegas, NV", price:420000, loan:"Conventional", rate:6.75, refi:false, sqft:1850, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-1"},
+  {addr:"456 Oak Ave", city:"Henderson, NV", price:310000, loan:"FHA", rate:6.25, refi:false, sqft:1400, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-2"},
+  {addr:"789 Pine Rd", city:"Reno, NV", price:550000, loan:"Conventional", rate:7.0, refi:true, sqft:2200, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-3"},
+  {addr:"321 Elm Blvd", city:"Los Angeles, CA", price:890000, loan:"Conventional", rate:6.9, refi:true, sqft:1900, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-4"},
+  {addr:"654 Cedar Ln", city:"Phoenix, AZ", price:275000, loan:"VA", rate:5.75, refi:false, sqft:1600, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-5"},
+  {addr:"987 Birch Way", city:"Denver, CO", price:495000, loan:"FHA", rate:6.5, refi:true, sqft:2100, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-6"},
+  {addr:"147 Spruce Dr", city:"Austin, TX", price:620000, loan:"Hard Money", rate:10.5, refi:false, sqft:2400, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-7"},
+  {addr:"258 Willow Ct", city:"Seattle, WA", price:780000, loan:"VA", rate:5.9, refi:true, sqft:2050, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-8"},
+  {addr:"412 Sunset Blvd", city:"Las Vegas, NV", price:380000, loan:"FHA", rate:6.1, refi:false, sqft:1650, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-9"},
+  {addr:"88 Desert Rose Dr", city:"Henderson, NV", price:525000, loan:"Conventional", rate:6.8, refi:true, sqft:2300, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-10"},
+  {addr:"1502 Canyon View Rd", city:"Phoenix, AZ", price:299000, loan:"VA", rate:5.5, refi:false, sqft:1750, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-11"},
+  {addr:"33 Palm Springs Ct", city:"Scottsdale, AZ", price:710000, loan:"Conventional", rate:7.1, refi:true, sqft:2800, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-12"},
+  {addr:"9201 Wilshire Ave", city:"Los Angeles, CA", price:1200000, loan:"Hard Money", rate:10.0, refi:false, sqft:3200, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-13"},
+  {addr:"77 Pacific Coast Hwy", city:"San Diego, CA", price:950000, loan:"Conventional", rate:6.95, refi:true, sqft:2600, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-14"},
+  {addr:"340 Maple Canyon Ln", city:"Salt Lake City, UT", price:415000, loan:"FHA", rate:6.3, refi:false, sqft:1900, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-15"},
+  {addr:"215 Mountain View Dr", city:"Denver, CO", price:560000, loan:"Conventional", rate:6.75, refi:true, sqft:2100, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-16"},
+  {addr:"601 Lakeview Terrace", city:"Chicago, IL", price:330000, loan:"FHA", rate:6.4, refi:false, sqft:1550, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-17"},
+  {addr:"1847 Riverside Dr", city:"Austin, TX", price:480000, loan:"VA", rate:5.8, refi:true, sqft:2050, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-18"},
+  {addr:"509 Magnolia St", city:"Houston, TX", price:275000, loan:"FHA", rate:6.2, refi:false, sqft:1450, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-19"},
+  {addr:"3300 Bayou Bend Rd", city:"Miami, FL", price:875000, loan:"Hard Money", rate:11.0, refi:false, sqft:3100, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-20"},
+  {addr:"124 Peachtree Ave", city:"Atlanta, GA", price:390000, loan:"Conventional", rate:6.6, refi:true, sqft:1800, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-21"},
+  {addr:"772 Blue Ridge Pkwy", city:"Charlotte, NC", price:345000, loan:"VA", rate:5.65, refi:false, sqft:1700, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-22"},
+  {addr:"88 Harbor View Ct", city:"Seattle, WA", price:820000, loan:"Conventional", rate:7.05, refi:true, sqft:2700, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-23"},
+  {addr:"451 Emerald Bay Rd", city:"Portland, OR", price:510000, loan:"FHA", rate:6.45, refi:false, sqft:1950, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-24"},
+  {addr:"1290 Fremont St", city:"Reno, NV", price:320000, loan:"Conventional", rate:6.55, refi:true, sqft:1600, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-25"},
+  {addr:"67 Copper Canyon Dr", city:"Tucson, AZ", price:260000, loan:"FHA", rate:6.15, refi:false, sqft:1400, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-26"},
+  {addr:"3891 Vineyard Rd", city:"Sacramento, CA", price:590000, loan:"Conventional", rate:6.9, refi:true, sqft:2250, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-27"},
+  {addr:"502 Timber Ridge Rd", city:"Denver, CO", price:675000, loan:"Construction", rate:8.25, refi:false, sqft:2900, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-29"},
+{addr:"1103 Sandstone Dr", city:"Las Vegas, NV", price:445000, loan:"Construction", rate:8.5, refi:false, sqft:2100, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-30"},
+{addr:"78 Oakwood Blvd", city:"Nashville, TN", price:520000, loan:"Conventional", rate:6.85, refi:true, sqft:2200, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-31"},
+{addr:"334 Crestview Ave", city:"Phoenix, AZ", price:388000, loan:"FHA", rate:6.35, refi:false, sqft:1800, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-32"},
+{addr:"2201 Lakeshore Dr", city:"Chicago, IL", price:740000, loan:"Construction", rate:9.0, refi:false, sqft:3100, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-33"},
+{addr:"99 Redwood Ct", city:"Portland, OR", price:615000, loan:"VA", rate:5.7, refi:true, sqft:2350, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-34"},
+{addr:"4401 Sunrise Blvd", city:"Miami, FL", price:980000, loan:"Hard Money", rate:11.25, refi:false, sqft:3400, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-35"},
+{addr:"167 Willowbrook Ln", city:"Austin, TX", price:535000, loan:"Construction", rate:8.75, refi:false, sqft:2600, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-36"},
+{addr:"820 Cliffside Rd", city:"Salt Lake City, UT", price:470000, loan:"Conventional", rate:6.7, refi:true, sqft:2000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-37"},
+{addr:"3310 Mesquite Trail", city:"Tucson, AZ", price:290000, loan:"FHA", rate:6.2, refi:false, sqft:1500, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-38"},
+{addr:"555 Golden Gate Ave", city:"San Francisco, CA", price:1450000, loan:"Conventional", rate:7.15, refi:true, sqft:2800, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-39"},
+{addr:"712 Harvest Moon Dr", city:"Reno, NV", price:365000, loan:"Construction", rate:8.9, refi:false, sqft:1950, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-40"},
+{addr:"1925 Bluebonnet Rd", city:"Houston, TX", price:310000, loan:"VA", rate:5.6, refi:false, sqft:1700, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-41"},
+{addr:"48 Coral Reef Dr", city:"Tampa, FL", price:580000, loan:"Conventional", rate:6.8, refi:true, sqft:2400, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-42"},
+{addr:"2890 Pinecrest Blvd", city:"Charlotte, NC", price:425000, loan:"Construction", rate:8.4, refi:false, sqft:2250, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-43"},
+{addr:"631 Silver Spur Rd", city:"Henderson, NV", price:495000, loan:"Hard Money", rate:10.25, refi:false, sqft:2100, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-44"},
+{addr:"1744 Aspen Grove Ln", city:"Seattle, WA", price:865000, loan:"Conventional", rate:7.0, refi:true, sqft:2900, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-45"},
+{addr:"390 Desert Wind Dr", city:"Scottsdale, AZ", price:760000, loan:"Construction", rate:9.1, refi:false, sqft:3300, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-46"},
+{addr:"215 Bayfront Terrace", city:"San Diego, CA", price:1100000, loan:"Conventional", rate:6.95, refi:true, sqft:3000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-47"},
+{addr:"808 Frontier Pkwy", city:"Dallas, TX", price:450000, loan:"FHA", rate:6.4, refi:false, sqft:2050, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-48"},
+{addr:"1200 Commerce Blvd", city:"Los Angeles, CA", price:2100000, loan:"Commercial", rate:7.5, refi:false, sqft:8500, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-49"},
+{addr:"340 Business Park Dr", city:"Las Vegas, NV", price:1850000, loan:"Commercial", rate:7.25, refi:true, sqft:7200, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-50"},
+{addr:"88 Corporate Way", city:"Phoenix, AZ", price:3200000, loan:"Commercial", rate:7.8, refi:false, sqft:12000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-51"},
+{addr:"500 Market St", city:"San Francisco, CA", price:4500000, loan:"Commercial", rate:8.1, refi:true, sqft:15000, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-52"},
+{addr:"1750 Industrial Ave", city:"Houston, TX", price:1600000, loan:"Commercial", rate:7.3, refi:false, sqft:9000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-53"},
+{addr:"290 Tech Center Dr", city:"Denver, CO", price:2750000, loan:"Commercial", rate:7.65, refi:true, sqft:11000, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-54"},
+{addr:"615 Office Park Blvd", city:"Atlanta, GA", price:1950000, loan:"Commercial", rate:7.4, refi:false, sqft:8000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-55"},
+{addr:"1010 Financial Dr", city:"Chicago, IL", price:5200000, loan:"Commercial", rate:8.25, refi:true, sqft:18000, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-56"},
+{addr:"432 Retail Row", city:"Miami, FL", price:2300000, loan:"Commercial", rate:7.55, refi:false, sqft:9500, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-57"},
+{addr:"877 Enterprise Blvd", city:"Seattle, WA", price:3800000, loan:"Commercial", rate:7.9, refi:true, sqft:14000, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-58"},
+{addr:"2200 Warehouse Row", city:"Dallas, TX", price:1400000, loan:"Commercial", rate:7.1, refi:false, sqft:22000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-59"},
+{addr:"54 Plaza Center Dr", city:"San Diego, CA", price:2900000, loan:"Commercial", rate:7.7, refi:true, sqft:10500, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-60"},
+{addr:"1500 Innovation Way", city:"Austin, TX", price:3100000, loan:"Commercial", rate:7.85, refi:false, sqft:13000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-61"},
+{addr:"720 Gateway Blvd", city:"Portland, OR", price:1750000, loan:"Commercial", rate:7.35, refi:true, sqft:7800, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-62"},
+{addr:"3300 Harbor View Pkwy", city:"Tampa, FL", price:2600000, loan:"Commercial", rate:7.6, refi:false, sqft:10000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-63"},
+{addr:"180 Executive Dr", city:"Charlotte, NC", price:1900000, loan:"Commercial", rate:7.45, refi:true, sqft:8200, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-64"},
+{addr:"950 Logistics Ct", city:"Henderson, NV", price:1300000, loan:"Commercial", rate:7.2, refi:false, sqft:19000, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-65"},
+{addr:"2800 Midtown Tower", city:"Nashville, TN", price:4100000, loan:"Commercial", rate:8.0, refi:true, sqft:16000, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-66"},
+{addr:"410 Flex Space Dr", city:"Sacramento, CA", price:1650000, loan:"Commercial", rate:7.3, refi:false, sqft:11500, type:"Brokered Loan", link:"https://yourwebsite.com/casestudy-67"},
+{addr:"675 Mixed Use Blvd", city:"Salt Lake City, UT", price:2200000, loan:"Commercial", rate:7.55, refi:true, sqft:9800, type:"Funded Loan", link:"https://yourwebsite.com/casestudy-68"},
+];
+
+const badgeClass = {
+  Conventional: "badge-conv",
+  FHA: "badge-fha",
+  VA: "badge-va",
+  "Hard Money": "badge-hard",
+    Construction: "badge-Construct",
+    Commercial: "badge-commercial",
+};
+
+const typeClass = {
+  "Brokered Loan": "badge-brokered",
+  "Funded Loan": "badge-funded",
+};
+
+const PAGE_SIZE = 8;
+let currentPage = 1;
+let filteredList = [];
+
+function filter() {
+  const lt = document.getElementById("loan-filter").value;
+  const tp = document.getElementById("type-filter").value;
+  const rf = document.getElementById("refi-filter").value;
+  const st = document.getElementById("sort-filter").value;
+  const search = document.getElementById("search").value.toLowerCase();
+
+  filteredList = houses.filter(h => {
+    if (lt !== "all" && h.loan !== lt) return false;
+    if (tp !== "all" && h.type !== tp) return false;
+    if (rf === "yes" && !h.refi) return false;
+    if (rf === "no" && h.refi) return false;
+    if (search && !h.addr.toLowerCase().includes(search) && !h.city.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  if (st === "price-asc") filteredList.sort((a, b) => a.price - b.price);
+  else if (st === "price-desc") filteredList.sort((a, b) => b.price - a.price);
+  else if (st === "rate-asc") filteredList.sort((a, b) => a.rate - b.rate);
+  else if (st === "rate-desc") filteredList.sort((a, b) => b.rate - a.rate);
+
+  currentPage = 1;
+  renderCards();
+}
+
+function renderCards() {
+  const container = document.getElementById("cards");
+  const btn = document.getElementById("load-more-btn");
+  const visible = filteredList.slice(0, currentPage * PAGE_SIZE);
+
+  document.getElementById("count").textContent = `Showing ${visible.length} of ${filteredList.length} propert${filteredList.length === 1 ? "y" : "ies"}`;
+
+  if (!filteredList.length) {
+    container.innerHTML = '<div class="no-results">No properties match your filters</div>';
+    btn.style.display = "none";
+    return;
+  }
+
+  container.innerHTML = visible.map(h => `
+    <a href="${h.link}" target="_blank" class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-addr">${h.addr}</div>
+          <div class="card-city">${h.city}</div>
+        </div>
+        ${h.refi ? '<span class="badge badge-refi">Refi</span>' : ''}
+      </div>
+      <span class="badge ${badgeClass[h.loan]}">${h.loan}</span>
+      <span class="badge ${typeClass[h.type]}">${h.type}</span>
+      <div class="card-row"><span>Price</span><span>$${h.price.toLocaleString()}</span></div>
+      <div class="card-row"><span>Rate</span><span>${h.rate.toFixed(2)}%</span></div>
+      <div class="card-row"><span>Sq ft</span><span>${h.sqft.toLocaleString()}</span></div>
+    </a>
+  `).join("");
+
+  btn.style.display = visible.length >= filteredList.length ? "none" : "inline-block";
+}
+
+function loadMore() {
+  currentPage++;
+  renderCards();
+}
+
+filter();
+</script>
+
+</body>
+</html>
