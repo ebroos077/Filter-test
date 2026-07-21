@@ -230,6 +230,8 @@ function renderCards() {
   btn.style.display = visible.length >= filteredList.length ? "none" : "inline-block";
 }
 
+<a href="https://www.fidelispf.com/">Fidelis Private Fund</a>
+
 function loadMore() {
   currentPage++;
   renderCards();
