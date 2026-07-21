@@ -23,7 +23,7 @@
     </div>
   </div>
   <div style="color: #666; font-family: Cabin Condensed, serif; text-align: center; flex: 1;">
-    <div style="font-size: 24px; font-weight: 700; color: #1c1c1c; line-height: 1;" id="hero-count">68</div>
+    <div style="font-size: 24px; font-weight: 700; color: #1c1c1c; line-height: 1;" id="hero-count">&nbsp;</div>
     <div style="font-size: 10px; letter-spacing: 1.5px; margin-top: 2px;">CASE STUDIES</div>
   </div>
   <div style="display: flex; gap: 8px; flex: 1; justify-content: flex-end;">
@@ -45,11 +45,11 @@
 <div class="filters">
   <div class="filter-group">
     <label>Search</label>
-    <input type="text" id="search" oninput="filter()" placeholder="Search city or state...">
+    <input type="text" id="search" oninput="applyFilters()" placeholder="Search city or state...">
   </div>
   <div class="filter-group">
     <label>Brokered or funded</label>
-    <select id="type-filter" onchange="filter()">
+    <select id="type-filter" onchange="applyFilters()">
       <option value="all">All</option>
       <option value="Brokered Loan">Brokered Loan</option>
       <option value="Funded Loan">Funded Loan</option>
@@ -57,7 +57,7 @@
   </div>
   <div class="filter-group">
     <label>Loan type</label>
-    <select id="loan-filter" onchange="filter()">
+    <select id="loan-filter" onchange="applyFilters()">
       <option value="all">All types</option>
       <option value="Conventional">Conventional</option>
       <option value="FHA">FHA</option>
@@ -69,7 +69,7 @@
   </div>
   <div class="filter-group">
     <label>Loan term</label>
-    <select id="term-filter" onchange="filter()">
+    <select id="term-filter" onchange="applyFilters()">
       <option value="all">All terms</option>
       <option value="10">10 years</option>
       <option value="15">15 years</option>
@@ -80,7 +80,7 @@
   </div>
   <div class="filter-group">
     <label>Refinance</label>
-    <select id="refi-filter" onchange="filter()">
+    <select id="refi-filter" onchange="applyFilters()">
       <option value="all">All</option>
       <option value="yes">Refinance only</option>
       <option value="no">Purchase only</option>
@@ -88,7 +88,7 @@
   </div>
   <div class="filter-group">
     <label>Property type</label>
-    <select id="property-filter" onchange="filter()">
+    <select id="property-filter" onchange="applyFilters()">
       <option value="all">All types</option>
       <option value="Single-Family Home">Single-Family Home</option>
       <option value="Condo">Condo</option>
@@ -105,7 +105,7 @@
   </div>
   <div class="filter-group">
     <label>Sort by</label>
-    <select id="sort-filter" onchange="filter()">
+    <select id="sort-filter" onchange="applyFilters()">
       <option value="loanamt-asc">Loan Amount: low to high</option>
       <option value="loanamt-desc">Loan Amount: high to low</option>
       <option value="rate-asc">Rate: low to high</option>
