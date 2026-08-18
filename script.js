@@ -146,10 +146,10 @@ const houses = [
   {proptype:"Multi-Family (2-4 Units)", city:"Reno, NV",           loanamt:610000,   loan:"Rehab Bridge",  rate:10.75,refi:false, type:"Funded Loan",   term:1,  link:"https://bluecactuslending.com/casestudy-131"},
   {proptype:"Townhouse",                city:"Salt Lake City, UT", loanamt:445000,   loan:"Rehab Bridge",  rate:11.00,refi:false, type:"Brokered Loan", term:2,  link:"https://bluecactuslending.com/casestudy-132"},
 
-  {proptype:"Single-Family Home",       city:"San Diego, CA",      loanamt:560000,   loan:"Cash-Out",      rate:7.25, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-133"},
-  {proptype:"Single-Family Home",       city:"Henderson, NV",      loanamt:410000,   loan:"Cash-Out",      rate:7.10, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-134"},
-  {proptype:"Condo",                    city:"Seattle, WA",        loanamt:495000,   loan:"Cash-Out",      rate:7.40, refi:true,  type:"Funded Loan",   term:20, link:"https://bluecactuslending.com/casestudy-135"},
-  {proptype:"Multi-Family (2-4 Units)", city:"Portland, OR",       loanamt:730000,   loan:"Cash-Out",      rate:7.55, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-136"},
+  {proptype:"Single-Family Home",       city:"San Diego, CA",      loanamt:560000,   loan:"Cash Out",      rate:7.25, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-133"},
+  {proptype:"Single-Family Home",       city:"Henderson, NV",      loanamt:410000,   loan:"Cash Out",      rate:7.10, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-134"},
+  {proptype:"Condo",                    city:"Seattle, WA",        loanamt:495000,   loan:"Cash Out",      rate:7.40, refi:true,  type:"Funded Loan",   term:20, link:"https://bluecactuslending.com/casestudy-135"},
+  {proptype:"Multi-Family (2-4 Units)", city:"Portland, OR",       loanamt:730000,   loan:"Cash Out",      rate:7.55, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-136"},
 ];
 
 const badgeClass = {
