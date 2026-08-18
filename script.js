@@ -12,7 +12,7 @@ const stateMap = {
 };
 
 const houses = [
-  {proptype:"Single-Family Home",       city:"Las Vegas, NV",      loanamt:420000,   loan:"Bridge",        rate:6.75, refi:false, type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-1"},
+  {proptype:"Apartment Complex (5+ Units)",       city:"San Diego, CA",      loanamt:2400000,   loan:"Bridge",        rate:6.75, refi:false, type:"Funded Loan", term:30, link:"https://bluecactuslending.com/casestudy-1"},
   {proptype:"Condo",                    city:"Henderson, NV",      loanamt:310000,   loan:"FHA",           rate:6.25, refi:false, type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-2"},
   {proptype:"Townhouse",                city:"Reno, NV",           loanamt:550000,   loan:"Conventional", rate:7.00, refi:true,  type:"Brokered Loan", term:15, link:"https://bluecactuslending.com/casestudy-3"},
   {proptype:"Single-Family Home",       city:"Los Angeles, CA",    loanamt:890000,   loan:"Conventional", rate:6.90, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-4"},
