@@ -12,7 +12,7 @@ const stateMap = {
 };
 
 const houses = [
-  {proptype:"Apartment Complex (5+ Units)",       city:"San Diego, CA",      loanamt:2400000,   loan:"Bridge",        rate:6.75, refi:false, type:"Funded Loan", term:30, link:"https://bluecactuslending.com/casestudy-1"},
+  {proptype:"Apartment Complex (5+ Units)", city:"San Diego, CA",  loanamt:2400000,  loan:"Bridge",        rate:6.75, refi:false, type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-1"},
   {proptype:"Condo",                    city:"Henderson, NV",      loanamt:310000,   loan:"FHA",           rate:6.25, refi:false, type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-2"},
   {proptype:"Townhouse",                city:"Reno, NV",           loanamt:550000,   loan:"Conventional", rate:7.00, refi:true,  type:"Brokered Loan", term:15, link:"https://bluecactuslending.com/casestudy-3"},
   {proptype:"Single-Family Home",       city:"Los Angeles, CA",    loanamt:890000,   loan:"Conventional", rate:6.90, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-4"},
@@ -135,6 +135,21 @@ const houses = [
   {proptype:"Single-Family Home",       city:"Surprise, AZ",       loanamt:415000,   loan:"Conventional", rate:6.70, refi:false, type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-122"},
   {proptype:"Apartment Complex (5+ Units)", city:"Las Vegas, NV",  loanamt:3400000,  loan:"Commercial",    rate:7.75, refi:true,  type:"Funded Loan",   term:25, link:"https://bluecactuslending.com/casestudy-123"},
   {proptype:"Single-Family Home",       city:"Mesa, AZ",           loanamt:460000,   loan:"Construction",  rate:8.60, refi:false, type:"Brokered Loan", term:25, link:"https://bluecactuslending.com/casestudy-124"},
+
+  {proptype:"Single-Family Home",       city:"Scottsdale, AZ",     loanamt:685000,   loan:"Bridge",        rate:9.25, refi:false, type:"Funded Loan",   term:1,  link:"https://bluecactuslending.com/casestudy-125"},
+  {proptype:"Multi-Family (2-4 Units)", city:"Denver, CO",         loanamt:540000,   loan:"Bridge",        rate:9.50, refi:false, type:"Brokered Loan", term:2,  link:"https://bluecactuslending.com/casestudy-126"},
+  {proptype:"Office Building",          city:"Austin, TX",         loanamt:1950000,  loan:"Bridge",        rate:8.90, refi:true,  type:"Funded Loan",   term:3,  link:"https://bluecactuslending.com/casestudy-127"},
+  {proptype:"Retail / Storefront",      city:"Las Vegas, NV",      loanamt:1250000,  loan:"Bridge",        rate:9.75, refi:false, type:"Brokered Loan", term:1,  link:"https://bluecactuslending.com/casestudy-128"},
+
+  {proptype:"Single-Family Home",       city:"Phoenix, AZ",        loanamt:395000,   loan:"Rehab Bridge",  rate:10.25,refi:false, type:"Funded Loan",   term:1,  link:"https://bluecactuslending.com/casestudy-129"},
+  {proptype:"Single-Family Home",       city:"Los Angeles, CA",    loanamt:820000,   loan:"Rehab Bridge",  rate:10.50,refi:false, type:"Brokered Loan", term:2,  link:"https://bluecactuslending.com/casestudy-130"},
+  {proptype:"Multi-Family (2-4 Units)", city:"Reno, NV",           loanamt:610000,   loan:"Rehab Bridge",  rate:10.75,refi:false, type:"Funded Loan",   term:1,  link:"https://bluecactuslending.com/casestudy-131"},
+  {proptype:"Townhouse",                city:"Salt Lake City, UT", loanamt:445000,   loan:"Rehab Bridge",  rate:11.00,refi:false, type:"Brokered Loan", term:2,  link:"https://bluecactuslending.com/casestudy-132"},
+
+  {proptype:"Single-Family Home",       city:"San Diego, CA",      loanamt:560000,   loan:"Cash-Out",      rate:7.25, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-133"},
+  {proptype:"Single-Family Home",       city:"Henderson, NV",      loanamt:410000,   loan:"Cash-Out",      rate:7.10, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-134"},
+  {proptype:"Condo",                    city:"Seattle, WA",        loanamt:495000,   loan:"Cash-Out",      rate:7.40, refi:true,  type:"Funded Loan",   term:20, link:"https://bluecactuslending.com/casestudy-135"},
+  {proptype:"Multi-Family (2-4 Units)", city:"Portland, OR",       loanamt:730000,   loan:"Cash-Out",      rate:7.55, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-136"},
 ];
 
 const badgeClass = {
