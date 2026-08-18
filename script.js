@@ -161,7 +161,7 @@ const badgeClass = {
   "Commercial":     "badge-commercial",
   "Bridge":         "badge-bridge",
   "Rehab Bridge":   "badge-rehab-bridge",
-  "Cash-Out":       "badge-cash-out",
+  "Cash Out":       "badge-cash-out",
 };
 
 const typeClass = {
