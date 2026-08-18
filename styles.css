@@ -20,9 +20,9 @@ input[type="text"]:focus, select:focus { outline: none; border-color: #aaa; }
 .badge-hard { background: #FAEEDA; color: #633806; }
 .badge-construct { background: #FFF4E5; color: #7A4F01; }
 .badge-commercial { background: #E5F9F6; color: #1B5E3C; }
-.badge-bridge { background: #E5F9F6; color: #FF4929; }
-.badge-rehab-bridge { background: #E5F9F6; color: #29FFAD; }
-.badge-cash-out { background: #E5F9F6; color: #A97EF7; }
+.badge-bridge { background: #FF4929; color: #D11F00; }
+.badge-rehab-bridge { background: #29FFAD; color: #00D181; }
+.badge-cash-out { background: #A97EF7; color: #4D00D1; }
 .badge-brokered { background: #F0E6FF; color: #4B2E83; }
 .badge-funded { background: #E6F9F0; color: #2E7D3C; }
 .badge-refi { background: #FAECE7; color: #712B13; }
