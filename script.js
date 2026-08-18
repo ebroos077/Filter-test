@@ -144,6 +144,10 @@ const badgeClass = {
   "Hard Money":  "badge-hard",
   Construction:  "badge-construct",
   Commercial:    "badge-commercial",
+  Bridge:        "badge-bridge",
+  Rehab Bridge:  "rehab-bridge",
+  Cash Out:      "cash-out",
+  
 };
 
 const typeClass = {
