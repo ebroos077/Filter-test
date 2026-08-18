@@ -145,8 +145,8 @@ const badgeClass = {
   Construction:  "badge-construct",
   Commercial:    "badge-commercial",
   Bridge:        "badge-bridge",
-  Rehab Bridge:  "rehab-bridge",
-  Cash Out:      "cash-out",
+  Rehab Bridge:  "badge-rehab bridge",
+  Cash Out:      "badge-cash out",
   
 };
 
