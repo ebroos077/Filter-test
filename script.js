@@ -12,7 +12,7 @@ const stateMap = {
 };
 
 const houses = [
-  {proptype:"Single-Family Home",       city:"Las Vegas, NV",      loanamt:420000,   loan:"Bridge", rate:6.75, refi:false, type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-1"},
+  {proptype:"Single-Family Home",       city:"Las Vegas, NV",      loanamt:420000,   loan:"Bridge",        rate:6.75, refi:false, type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-1"},
   {proptype:"Condo",                    city:"Henderson, NV",      loanamt:310000,   loan:"FHA",           rate:6.25, refi:false, type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-2"},
   {proptype:"Townhouse",                city:"Reno, NV",           loanamt:550000,   loan:"Conventional", rate:7.00, refi:true,  type:"Brokered Loan", term:15, link:"https://bluecactuslending.com/casestudy-3"},
   {proptype:"Single-Family Home",       city:"Los Angeles, CA",    loanamt:890000,   loan:"Conventional", rate:6.90, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-4"},
@@ -39,7 +39,7 @@ const houses = [
   {proptype:"Single-Family Home",       city:"Reno, NV",           loanamt:320000,   loan:"Conventional", rate:6.55, refi:true,  type:"Brokered Loan", term:15, link:"https://bluecactuslending.com/casestudy-25"},
   {proptype:"Manufactured Home",        city:"Tucson, AZ",         loanamt:260000,   loan:"FHA",           rate:6.15, refi:false, type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-26"},
   {proptype:"Single-Family Home",       city:"Sacramento, CA",     loanamt:590000,   loan:"Conventional", rate:6.90, refi:true,  type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-27"},
-  {proptype:"Single-Family Home",       city:"Denver, CO",         loanamt:675000,   loan:"Construction",  rate:8.25, refi:false, type:"",   term:25, link:"https://bluecactuslending.com/casestudy-29"},
+  {proptype:"Single-Family Home",       city:"Denver, CO",         loanamt:675000,   loan:"Construction",  rate:8.25, refi:false, type:"Funded Loan",   term:25, link:"https://bluecactuslending.com/casestudy-29"},
   {proptype:"Single-Family Home",       city:"Las Vegas, NV",      loanamt:445000,   loan:"Construction",  rate:8.50, refi:false, type:"Brokered Loan", term:25, link:"https://bluecactuslending.com/casestudy-30"},
   {proptype:"Single-Family Home",       city:"Nashville, TN",      loanamt:520000,   loan:"Conventional", rate:6.85, refi:true,  type:"Funded Loan",   term:30, link:"https://bluecactuslending.com/casestudy-31"},
   {proptype:"Townhouse",                city:"Phoenix, AZ",        loanamt:388000,   loan:"FHA",           rate:6.35, refi:false, type:"Brokered Loan", term:30, link:"https://bluecactuslending.com/casestudy-32"},
@@ -138,16 +138,15 @@ const houses = [
 ];
 
 const badgeClass = {
-  Conventional:  "badge-conv",
-  FHA:           "badge-fha",
-  VA:            "badge-va",
-  "Hard Money":  "badge-hard",
-  Construction:  "badge-construct",
-  Commercial:    "badge-commercial",
-  Bridge:        "badge-bridge",
-  Rehab Bridge:  "badge-rehab-bridge",
-  Cash Out:      "badge-cash-out",
-  
+  "Conventional":   "badge-conv",
+  "FHA":            "badge-fha",
+  "VA":             "badge-va",
+  "Hard Money":     "badge-hard",
+  "Construction":   "badge-construct",
+  "Commercial":     "badge-commercial",
+  "Bridge":         "badge-bridge",
+  "Rehab Bridge":   "badge-rehab-bridge",
+  "Cash-Out":       "badge-cash-out",
 };
 
 const typeClass = {
@@ -220,6 +219,8 @@ function renderCards() {
   }
 
   container.innerHTML = visible.map(function (h) {
+    const loanBadge = badgeClass[h.loan] || "";
+    const typeBadge = typeClass[h.type] || "";
     return '' +
       '<a href="' + h.link + '" target="_blank" rel="noopener" class="card">' +
         '<div class="card-header">' +
@@ -229,8 +230,8 @@ function renderCards() {
           '</div>' +
           (h.refi ? '<span class="badge badge-refi">Refi</span>' : '') +
         '</div>' +
-        '<span class="badge ' + badgeClass[h.loan] + '">' + h.loan + '</span>' +
-        '<span class="badge ' + typeClass[h.type] + '">' + h.type + '</span>' +
+        '<span class="badge ' + loanBadge + '">' + h.loan + '</span>' +
+        (h.type ? '<span class="badge ' + typeBadge + '">' + h.type + '</span>' : '') +
         '<div class="card-row"><span>Loan Amount</span><span>$' + h.loanamt.toLocaleString() + '</span></div>' +
         '<div class="card-row"><span>Rate</span><span>' + h.rate.toFixed(2) + '%</span></div>' +
         '<div class="card-row"><span>Loan term</span><span>' + h.term + ' years</span></div>' +
